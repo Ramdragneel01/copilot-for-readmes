@@ -1,0 +1,62 @@
+{
+  "name": "copilot-for-readmes",
+  "version": "0.1.0",
+  "description": "Generate production-grade README files from repository signals (CLI + API + VS Code command).",
+  "license": "MIT",
+  "author": "Ram Prakash Dhulipudi <ramprakashdhulipudi@gmail.com>",
+  "publisher": "ramdragneel01",
+  "homepage": "https://github.com/Ramdragneel01/copilot-for-readmes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ramdragneel01/copilot-for-readmes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ramdragneel01/copilot-for-readmes/issues"
+  },
+  "engines": {
+    "node": ">=20",
+    "vscode": "^1.95.0"
+  },
+  "main": "dist/extension.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "cfr": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "activationEvents": [
+    "onCommand:copilotForReadmes.generateReadme"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "copilotForReadmes.generateReadme",
+        "title": "Copilot for READMEs: Generate README"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check-types": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "fastify": "^4.28.1"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.3",
+    "@types/node": "^22.7.9",
+    "@types/vscode": "^1.95.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
+  }
+}

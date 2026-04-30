@@ -1,0 +1,15 @@
+services:
+  copilot-for-readmes:
+    build: .
+    image: ghcr.io/ramdragneel01/copilot-for-readmes:dev
+    container_name: copilot-for-readmes
+    restart: unless-stopped
+    ports:
+      - "8092:8092"
+    environment:
+      CFR_HOST: 0.0.0.0
+      CFR_PORT: 8092
+      CFR_LOG_LEVEL: info
+    volumes:
+      - ./:/workspace:ro
+    command: ["node", "dist/cli.js", "serve", "--host", "0.0.0.0", "--port", "8092"]
