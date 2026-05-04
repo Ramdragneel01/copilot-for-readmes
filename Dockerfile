@@ -1,6 +1,7 @@
-FROM node:20-slim AS build
+FROM node:22-bookworm-slim AS build
 
 WORKDIR /app
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 COPY package*.json ./
 RUN npm ci
 
@@ -9,9 +10,10 @@ COPY src ./src
 COPY tests ./tests
 RUN npm run build
 
-FROM node:20-slim AS runtime
+FROM node:22-bookworm-slim AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
 RUN npm ci --omit=dev

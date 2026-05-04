@@ -27,9 +27,6 @@
     "README.md",
     "LICENSE"
   ],
-  "activationEvents": [
-    "onCommand:copilotForReadmes.generateReadme"
-  ],
   "contributes": {
     "commands": [
       {
