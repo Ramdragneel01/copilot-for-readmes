@@ -1,4 +1,4 @@
-import { promises as fs } from "node:fs";
+import { existsSync, promises as fs } from "node:fs";
 import path from "node:path";
 
 import { RepoSignals } from "./types";
@@ -84,12 +84,16 @@ async function walkFiles(root: string, maxFiles = 3000): Promise<string[]> {
 }
 
 function detectPackageManager(repoPath: string, hasPackageJson: boolean, hasPyproject: boolean): RepoSignals["packageManager"] {
-    const hasPnpm = require("node:fs").existsSync(path.join(repoPath, "pnpm-lock.yaml"));
-    const hasYarn = require("node:fs").existsSync(path.join(repoPath, "yarn.lock"));
-    const hasNpm = require("node:fs").existsSync(path.join(repoPath, "package-lock.json"));
+    const hasPnpm = existsSync(path.join(repoPath, "pnpm-lock.yaml"));
+    const hasYarn = existsSync(path.join(repoPath, "yarn.lock"));
+    const hasNpm = existsSync(path.join(repoPath, "package-lock.json"));
+    const hasBun = existsSync(path.join(repoPath, "bun.lockb")) || existsSync(path.join(repoPath, "bun.lock"));
 
     if (hasPackageJson && hasPyproject) {
         return "mixed";
+    }
+    if (hasBun) {
+        return "bun";
     }
     if (hasPnpm) {
         return "pnpm";
@@ -193,6 +197,7 @@ export async function analyzeRepo(repoPathInput: string): Promise<RepoSignals> {
     if (packageManager === "npm") quickstartCommands.push("npm install", "npm run build", "npm test");
     if (packageManager === "pnpm") quickstartCommands.push("pnpm install", "pnpm build", "pnpm test");
     if (packageManager === "yarn") quickstartCommands.push("yarn", "yarn build", "yarn test");
+    if (packageManager === "bun") quickstartCommands.push("bun install", "bun run build", "bun test");
     if (packageManager === "python") quickstartCommands.push("pip install -r requirements.txt", "python -m pytest");
     if (packageManager === "mixed") quickstartCommands.push("npm install", "pip install -r requirements.txt");
     if (quickstartCommands.length === 0) quickstartCommands.push("<add build + test commands>");

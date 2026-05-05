@@ -64,6 +64,26 @@ describe("analyzeRepo", () => {
         }
     });
 
+    it("detects bun package manager from lockfile", async () => {
+        const repo = await makeTempRepo({
+            "package.json": JSON.stringify({ name: "bun-app" }, null, 2),
+            "bun.lockb": "",
+            "src/index.ts": "console.log('ok');\n"
+        });
+
+        try {
+            const signals = await analyzeRepo(repo);
+            expect(signals.packageManager).toBe("bun");
+            expect(signals.quickstartCommands).toEqual([
+                "bun install",
+                "bun run build",
+                "bun test"
+            ]);
+        } finally {
+            await removeTempRepo(repo);
+        }
+    });
+
     it("throws on missing path", async () => {
         await expect(analyzeRepo("/definitely/missing/path")).rejects.toThrow();
     });

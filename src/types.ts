@@ -2,7 +2,7 @@ export interface RepoSignals {
     repoPath: string;
     projectName: string;
     description: string;
-    packageManager: "npm" | "pnpm" | "yarn" | "python" | "mixed" | "unknown";
+    packageManager: "npm" | "pnpm" | "yarn" | "bun" | "python" | "mixed" | "unknown";
     languages: string[];
     frameworks: string[];
     scripts: Record<string, string>;
