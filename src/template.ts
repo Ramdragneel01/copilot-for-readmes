@@ -4,6 +4,18 @@ function h2(text: string): string {
     return `## ${text}`;
 }
 
+function sectionAnchor(text: string): string {
+    return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .trim()
+        .replace(/\s+/g, "-");
+}
+
+function toc(items: string[]): string {
+    return items.map((item) => `- [${item}](#${sectionAnchor(item)})`).join("\n");
+}
+
 function code(lines: string[]): string {
     return ["```bash", ...lines, "```"].join("\n");
 }
@@ -40,11 +52,24 @@ export function renderReadme(signals: RepoSignals, options: GenerateOptions = {}
     const tagline =
         options.tagline?.trim() ||
         `${signals.description}`;
+    const sectionNames = [
+        "Overview",
+        "Quick Start",
+        "Project Structure",
+        "Scripts",
+        "Security Notes",
+        "Roadmap",
+        "License"
+    ];
 
     const sections = [
         `# ${title}`,
         "",
         `> ${tagline}`,
+        "",
+        h2("Table of Contents"),
+        "",
+        toc(sectionNames),
         "",
         h2("Overview"),
         "",

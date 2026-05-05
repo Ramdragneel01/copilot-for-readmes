@@ -27,6 +27,7 @@ describe("renderReadme", () => {
     it("renders required sections", () => {
         const md = renderReadme(baseSignals);
         expect(md).toContain("# demo-project");
+        expect(md).toContain("## Table of Contents");
         expect(md).toContain("## Overview");
         expect(md).toContain("## Quick Start");
         expect(md).toContain("## Project Structure");
